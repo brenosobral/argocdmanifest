@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: teste-gitops01
+  namespace: openshift-gitops
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Microsserviços e ferramentas do namespace teste-gitops01
+  sourceRepos:
+    - "*"
+  destinations:
+    - namespace: teste-gitops01
+      name: in-cluster
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceBlacklist:
+    - group: ""
+      kind: ResourceQuota
+    - group: ""
+      kind: LimitRange
+    - group: ""
+      kind: NetworkPolicy
+
+  # Enables namespace orphaned resource monitoring.
+  orphanedResources:
+    warn: true
