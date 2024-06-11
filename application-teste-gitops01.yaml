@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: teste-gitops01-dev
+  namespace: openshift-gitops
+spec:
+  project: teste-gitops01
+  source:
+    repoURL: https://github.com/brenosobral/argocdmanifest.git
+    targetRevision: HEAD
+    path: apptestehttp
+  destination:
+    name: in-cluster
+    namespace: teste-gitops01
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      selfHeal: true
+      prune: true
